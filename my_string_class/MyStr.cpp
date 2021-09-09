@@ -5,12 +5,24 @@
 
 using namespace std;
 
+// static counter
+
+int MyStr::countMyStrings = 0;
+
+// method for output static counter
+
+void MyStr::printCounter()const
+{
+    cout << countMyStrings;
+}
+
 // def. ctor
 
 MyStr::MyStr() 
 {
     length = 80;
     st = new char[length];
+    countMyStrings++
 }
 
 // ctor with length param.
@@ -19,6 +31,7 @@ MyStr::MyStr(int length)
 {
     this->length = length;
     st = new char[this->length];
+    countMyStrings++;
 }
 
 // ctor with char* param.
@@ -38,6 +51,8 @@ MyStr::MyStr(const char* n_st)
         st[i] = n_st[i];
     }
     st[length] = '\0';
+
+    countMyStrings++;
 }
 
 // copy ctor
@@ -59,6 +74,8 @@ MyStr::MyStr(const MyStr& other)
     }
 
     this->st[length] = '\0';
+
+    countMyStrings++;
 }
 
 // inspectors
@@ -145,7 +162,7 @@ MyStr MyStr::operator+(const MyStr& c_str)
 
 // print method
 
-void MyStr::print()
+void MyStr::printStr()const
 {
     for (int i = 0; i < length; i++)
     {
@@ -153,7 +170,43 @@ void MyStr::print()
     }
 }
 
+// input method
+
+void MyStr::inputStr()
+{
+    if (this->st != nullptr)
+    {
+        delete[] this->st;
+        this->st = nullptr;
+    }
+
+    cout << "Enter string length: ";
+    cin >> length;
+
+    st = new char[length];
+
+    cin.ignore();
+
+    cout << "Enter string: ";
+    gets_s(st, 199);
+}
+
+// character search
+
+int MyStr::charSearch(char key)
+{
+    for (int i = 0; i < length; i++)
+    {
+        if (st[i] == key)return i;
+    }
+    return -1;
+}
+
+// destructor
+
 MyStr::~MyStr()
 {
     if (st != nullptr)delete[] st;
+
+    countMyStrings--;
 }

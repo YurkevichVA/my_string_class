@@ -2,9 +2,12 @@
 
 class MyStr
 {
+    static int countMyStrings;
     char* st = nullptr;
     int length = 0;
 public:
+    // method for output static counter
+    void printCounter()const;
     // def. ctor
     MyStr();
     // ctor with length param.
@@ -23,7 +26,11 @@ public:
     // concat
     MyStr operator+(const MyStr& c_str);
     // print method
-    void print();
+    void printStr()const;
+    // input method;
+    void inputStr();
+    // character search
+    int charSearch(char key);
     // destructor
     ~MyStr();
 };

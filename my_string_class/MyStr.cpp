@@ -13,7 +13,7 @@ int MyStr::countMyStrings = 0;
 
 void MyStr::printCounter()const
 {
-    cout << countMyStrings;
+    cout << countMyStrings << endl;
 }
 
 // def. ctor
@@ -21,8 +21,15 @@ void MyStr::printCounter()const
 MyStr::MyStr() 
 {
     length = 80;
+
+    if (st != nullptr)
+    {
+        delete[] st;
+        st = nullptr;
+    }
+
     st = new char[length];
-    countMyStrings++
+    countMyStrings++;
 }
 
 // ctor with length param.
@@ -30,7 +37,15 @@ MyStr::MyStr()
 MyStr::MyStr(int length)
 {
     this->length = length;
+
+    if (st != nullptr)
+    {
+        delete[] this->st;
+        st = nullptr;
+    }
+
     st = new char[this->length];
+
     countMyStrings++;
 }
 
@@ -38,19 +53,19 @@ MyStr::MyStr(int length)
 
 MyStr::MyStr(const char* n_st)
 {
-    if (this->st != nullptr)
+    if (st != nullptr)
     {
-        delete[] this->st;
-        this->st = nullptr;
+        delete[] st;
+        st = nullptr;
     }
 
     length = strlen(n_st) + 1;
     st = new char[length];
+
     for (int i = 0; i < length; i++)
     {
         st[i] = n_st[i];
     }
-    st[length] = '\0';
 
     countMyStrings++;
 }
@@ -72,8 +87,6 @@ MyStr::MyStr(const MyStr& other)
     {
         this->st[i] = other.st[i];
     }
-
-    this->st[length] = '\0';
 
     countMyStrings++;
 }
@@ -108,8 +121,6 @@ MyStr& MyStr::operator=(const MyStr& other)
         this->st[i] = other.st[i];
     }
 
-    this->st[length] = '\0';
-
     return *this;
 }
 
@@ -131,7 +142,7 @@ MyStr& MyStr::operator=(const char* char_arr)
         this->st[i] = char_arr[i];
     }
 
-    this->st[length] = '\0';
+    //this->st[length] = '\0';
 
     return *this;
 }
@@ -140,22 +151,20 @@ MyStr& MyStr::operator=(const char* char_arr)
 
 MyStr MyStr::operator+(const MyStr& c_str)
 {
-    MyStr n_str;
-    n_str.length = this->length + c_str.length;
-    n_str.st = new char[length];
+    MyStr n_str(this->length + c_str.length - 1);
 
     int i = 0;
 
-    for (; i < this->length; i++)
+    for (; i < this->length - 1; i++)
     {
         n_str.st[i] = this->st[i];
     }
-    for (int j = 0; i < length; i++, j++)
+    for (int j = 0; i < n_str.length; i++, j++)
     {
         n_str.st[i] = c_str.st[j];
     }
 
-    n_str.st[length] = '\0';
+    //n_str.st[length] = '\0';
 
     return n_str;
 }
@@ -188,7 +197,7 @@ void MyStr::inputStr()
     cin.ignore();
 
     cout << "Enter string: ";
-    gets_s(st, 199);
+    gets_s(st, length);
 }
 
 // character search
@@ -200,6 +209,52 @@ int MyStr::charSearch(char key)
         if (st[i] == key)return i;
     }
     return -1;
+}
+
+// search substr
+
+bool MyStr::findSubStr(const char* sub_str)const
+{
+    for (int i = 0; i < this->length; i++)
+    {
+        for (int j = i, k = 0; k <= strlen(sub_str); j++, k++)
+        {
+            if (this->st[j] != sub_str[k]) break;
+            if (this->st[j] == sub_str[k] && k == strlen(sub_str)) return true;
+        }
+    }
+    return false;
+}
+
+// delete char
+
+void MyStr::charDel(char del_char)
+{
+    MyStr buff(length - 1);
+    int index = charSearch(del_char);
+    //char* buff = new char[length - 1];
+    for (int i = 0, j = 0; j < this->length; i++, j++)
+    {
+        if (j == index)j++;
+        buff.st[i] = this->st[j];
+    }
+
+    delete[] this->st;
+    this->st = nullptr;
+
+    *this = buff;
+}
+
+// compare strings
+
+int MyStr::myCmp(const MyStr& other)const
+{
+    for (int i = 0; i < this->length; i++)
+    {
+        if ((int)this->st[i] - (int)other.st[i] > 0)return -1;
+        else if ((int)this->st[i] - (int)other.st[i] < 0)return 1;
+    }
+    return 0;
 }
 
 // destructor

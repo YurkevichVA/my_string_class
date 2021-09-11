@@ -31,6 +31,12 @@ public:
     void inputStr();
     // character search
     int charSearch(char key);
+    // search substr
+    bool findSubStr(const char* sub_str)const;
+    // delete char
+    void charDel(char del_ch);
+    // compare strings
+    int myCmp(const MyStr& other)const;
     // destructor
     ~MyStr();
 };

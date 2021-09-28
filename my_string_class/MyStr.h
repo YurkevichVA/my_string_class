@@ -16,6 +16,8 @@ public:
     MyStr(const char* n_st);
     // copy ctor
     MyStr(const MyStr& other);
+    // move ctor
+    MyStr(MyStr&& other);
     // inspectors
     const char* getSt()const;
     int getLength()const;
@@ -23,6 +25,8 @@ public:
     MyStr& operator=(const MyStr& other);
     // overwise oper. = for char*
     MyStr& operator=(const char* char_arr);
+    // overwise oper. = for move semantic
+    MyStr& operator=(MyStr&& other);
     // concat
     MyStr operator+(const MyStr& c_str);
     // print method

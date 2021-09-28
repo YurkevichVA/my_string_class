@@ -91,6 +91,13 @@ MyStr::MyStr(const MyStr& other)
     countMyStrings++;
 }
 
+MyStr::MyStr(MyStr&& other)
+{
+    this->st = other.st;
+    this->length = other.length;
+    other.st = nullptr;
+}
+
 // inspectors
 
 const char* MyStr::getSt()const
@@ -145,6 +152,13 @@ MyStr& MyStr::operator=(const char* char_arr)
     //this->st[length] = '\0';
 
     return *this;
+}
+
+MyStr& MyStr::operator=(MyStr&& other)
+{
+    this->length = other.length;
+    this->st = other.st;
+    other.st = nullptr;
 }
 
 // concat
